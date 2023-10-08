@@ -1,0 +1,14 @@
+{
+    "AZURE_SUBSCRIPTION_ID": "",
+    "AZURE_CLIENT_ID": "",
+    "AZURE_CLIENT_SECRET": "",
+    "AZURE_TENANT_ID": "",
+
+    "RESOURCE_GROUP_NAME": "shadowsocks-rg",
+    "CONTAINER_REGISTRY_NAME": "shadowsocksacr2023",
+    "LOCATION": "southeastasia",
+
+    "APP_NAME": "shadowsockssrv",
+    "APP_VERSION": "0.0.1"
+
+}
