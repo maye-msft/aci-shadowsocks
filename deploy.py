@@ -68,22 +68,20 @@ def main():
     build_container.publish_to_acr(app_name, app_version, registry_server, registry_username, registry_password)
     log_info(f"publish docker image {app_name}:{app_version} to {registry_server}")
 
-    SHADOWSOCKS_PASSWORD = os.environ['SHADOWSOCKS_PASSWORD']
-    SHADOWSOCKS_PORT = os.environ['SHADOWSOCKS_PORT']
 
     create_container_instance(res_grp_name, registry_server, registry_username, registry_password, 
                     app_name, app_version, 
                     app_name,
                     location, 
-                    environment_variables={"SHADOWSOCKS_PORT": SHADOWSOCKS_PORT}, 
-                    secure_environment_variables={"SHADOWSOCKS_PASSWORD": SHADOWSOCKS_PASSWORD},
+                    environment_variables={}, 
+                    secure_environment_variables={},
                     restart_policy=ACI_RESTART_POLICY_NEVER,
                     port=port)
     log_info(f"create container instance {app_name} in {res_grp_name}")
 
     
-    delete_container_registry(res_grp_name, registry_name)
-    log_info(f"delete container registry {registry_name} in {res_grp_name}")
+    # delete_container_registry(res_grp_name, registry_name)
+    # log_info(f"delete container registry {registry_name} in {res_grp_name}")
 
 
 if __name__ == '__main__':

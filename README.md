@@ -38,11 +38,13 @@ This repo is to create a shadowsocks server with Azure Container Instance and Az
 
 ## Shadowsocks Server Setup
 
-1. Clone this repo
+1. Setup python libraries
 
     ```bash
     pip install -r requirements.txt
     ```
+
+1. Modify ss_config.json for your shadowsocks server configuration
 
 1. Deploy Shadowsocks Server
 
