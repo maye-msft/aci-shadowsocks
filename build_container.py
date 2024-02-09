@@ -5,7 +5,7 @@ import datetime
 def build_local_docker_image(image_name:str, dockerfile_path:str, app_path:str=None):
     if app_path is None:
         app_path = dockerfile_path
-    cmd = f'docker build -t {image_name} -f {dockerfile_path}/Dockerfile {app_path}'
+    cmd = f'docker build --platform=linux/amd64 -t {image_name} -f {dockerfile_path}/Dockerfile {app_path}'
     log.log_info(cmd)
     code = os.system(cmd)
     if code != 0:

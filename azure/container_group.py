@@ -41,7 +41,7 @@ def create_container_instance(resgrp_name:str,
                               command:list=None, 
                               cpu:float=1.0, memory:float=1.5,
                               port:int=5000):
-    log_info(f"Creating container instance {image_name} with tag {tag} in resource group {resgrp_name} in location {location}")
+    log_info(f"Creating container instance {container_name} with tag {tag} in resource group {resgrp_name} in location {location}")
     environment_variables_array = []
     if environment_variables is not None:
         for key, value in environment_variables.items():
@@ -49,7 +49,7 @@ def create_container_instance(resgrp_name:str,
                 "name": key,
                 "value": value
             })
-            log_info(f"Added environment variable {key}={value} to container {image_name}")
+            log_info(f"Added environment variable {key}={value} to container {container_name}")
 
     if secure_environment_variables is not None:
         for key, value in secure_environment_variables.items():
@@ -57,7 +57,7 @@ def create_container_instance(resgrp_name:str,
                 "name": key,
                 "secureValue": value
             })
-            log_info(f"Added secure environment variable {key} to container {image_name}")
+            log_info(f"Added secure environment variable {key} to container {container_name}")
 
     volumes = []
     volume_mounts = []
@@ -74,7 +74,7 @@ def create_container_instance(resgrp_name:str,
                     },
                     "name": volume_names[i],
                 })
-                log_info(f"Created volume {volume_name} for container {image_name}")
+                log_info(f"Created volume {volume_name} for container {app_name}")
                 volume_mounts.append(
                     {"mountPath": "/mnt/"+volume_name, "name": volume_name, "readOnly": False},
                 )
@@ -84,7 +84,7 @@ def create_container_instance(resgrp_name:str,
 
     response = containerinstance_client.container_groups.begin_create_or_update(
         resgrp_name,
-        f"{container_name}_group",
+        f"{container_name}-grp",
         container_group={"location": location,
             "properties": {
                 "containers": [
@@ -107,7 +107,7 @@ def create_container_instance(resgrp_name:str,
                 }],
                 "volumes": volumes,
                 "restartPolicy": restart_policy,
-                "ipAddress": {"ports": [{"port": 5000, "protocol": "TCP"}], "type": "Public"},
+                "ipAddress": {"ports": [{"port": port, "protocol": "TCP"}], "type": "Public"},
                 "osType": "Linux",
 
             },
@@ -119,11 +119,11 @@ def create_container_instance(resgrp_name:str,
 def delete_container_instance(resgrp_name:str, container_name:str):
     log_info(f"Deleting container instance {container_name} in resource group {resgrp_name}")
     containerinstance_client = ContainerInstanceManagementClient(credential, subscription_id)
-    containerinstance_client.container_groups.begin_delete(resgrp_name, f"{container_name}_group").result()
+    containerinstance_client.container_groups.begin_delete(resgrp_name, f"{container_name}-grp").result()
     log_info(f"Deleted container instance {container_name}")
 
 def pause_container_instance(resgrp_name:str, container_name:str):
     log_info(f"Pausing container instance {container_name} in resource group {resgrp_name}")
     containerinstance_client = ContainerInstanceManagementClient(credential, subscription_id)
-    containerinstance_client.container_groups.stop(resgrp_name, f"{container_name}_group")
+    containerinstance_client.container_groups.stop(resgrp_name, f"{container_name}-grp")
     log_info(f"Paused container instance {container_name}")
